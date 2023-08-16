@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchExportShell", "BatchExportShell\BatchExportShell.csproj", "{7A6EDF1A-3FB3-496C-BB0A-F5927E6723E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchTools", "BatchTools\BatchTools.csproj", "{1E951034-8B82-44E6-85D3-0741293D570C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7A6EDF1A-3FB3-496C-BB0A-F5927E6723E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A6EDF1A-3FB3-496C-BB0A-F5927E6723E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A6EDF1A-3FB3-496C-BB0A-F5927E6723E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E951034-8B82-44E6-85D3-0741293D570C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E951034-8B82-44E6-85D3-0741293D570C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E951034-8B82-44E6-85D3-0741293D570C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E951034-8B82-44E6-85D3-0741293D570C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

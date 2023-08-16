@@ -11,6 +11,9 @@
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BatchTools\BatchTools.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\Trident.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
