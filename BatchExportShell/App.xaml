@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:BatchExportShell"
              xmlns:prism="http://prismlibrary.com/" >
     <Application.Resources>
-         
+        <!--here is where we refrence the resource dictionaries for the batch cards and treeviews and such-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/BatchCards.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+
     </Application.Resources>
 </prism:PrismApplication>

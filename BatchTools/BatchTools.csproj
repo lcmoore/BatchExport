@@ -2,12 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
+	  <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+  </ItemGroup>
+	<ItemGroup>
+		<Content Include="PythonScripts\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BatchExportShell.Core\BatchExportShell.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PythonScripts\tmp\" />
   </ItemGroup>
 
 </Project>

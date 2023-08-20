@@ -24,5 +24,34 @@ namespace BatchTools.Models
         public string? PrimaryOncologistId { get; private set; }
         public string? ExpandedDisplay { get; set; }
         public ObservableCollection<Course>? Courses { get; set; }
+
+        public Patient()
+        {
+            Courses = new ObservableCollection<Course>();
+        }
+
+        public Patient(string id)
+        {
+            Id = id.Trim();
+            Courses = new ObservableCollection<Course>();
+        }
+        public Patient(string id, string course, string plan)
+        {
+            Id = id.Trim();
+            Courses = new ObservableCollection<Course>();
+            Courses.Add(new Course(course, plan));
+
+        }
+        public Patient(string id, Dictionary<string, List<string>> request)
+        {
+            Id = id.Trim();
+            Courses = new ObservableCollection<Course>();
+            foreach (var course in request)
+            {
+                Courses.Add(new Course(course.Key, course.Value));
+                
+            }
+
+        }
     }
 }

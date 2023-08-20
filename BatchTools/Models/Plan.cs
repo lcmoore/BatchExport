@@ -32,6 +32,15 @@ namespace BatchTools.Models
         public string? PlanType { get; set; }
         public string? ExpandedDisplay { get; set; }
         public string?   BulkDataString { get; set; }
+
+        public Plan()
+        {
+        }
+
+        public Plan(string name)
+        {
+            Name = name.Trim();
+        }
     }
 
 }

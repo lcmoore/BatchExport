@@ -1,0 +1,1 @@
+This is a placeholder text file that ensures that the tmp folder is copied to the output directory when compiled.

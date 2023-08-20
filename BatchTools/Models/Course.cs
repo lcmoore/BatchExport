@@ -25,6 +25,27 @@ namespace BatchTools.Models
         public string? Id { get; private set; }
         public string?   Intent { get; private set; }
         public DateTime? StartDateTime { get; private set; }
+
+        public Course()
+        {
+            Plans = new ObservableCollection<Plan>();
+        }
+
+        public Course(string id, string plan)
+        {
+            Id = id.Trim();
+            Plans = new ObservableCollection<Plan>();
+            Plans.Add(new Plan(plan));
+        }
+        public Course(string id, List<string> plans)
+        {
+            Id = id.Trim();
+            Plans = new ObservableCollection<Plan>();
+            foreach (var plan in plans)
+            {
+                Plans.Add(new Plan(plan));
+            }
+        }
     }
 
 }
