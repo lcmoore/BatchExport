@@ -15,19 +15,19 @@ namespace BatchTools.Models
         public string? LastName { get; set; }
         public string? Display { get; set; }
         public string? Sex { get; set; }
-        public string? Comment { get; private set; }
-        public DateTime? CreationDateTime { get; private set; }
-        public DateTime? DateOfBirth { get; private set; }
-        public DateTime HistoryDateTime { get; private set; }
-        public string? HistoryUserDisplayName { get; private set; }
-        public string? HistoryUserName { get; private set; }
-        public string? PrimaryOncologistId { get; private set; }
+        public string? Comment { get;  set; }
+        public string? CreationDateTime { get;  set; }
+        public string? DateOfBirth { get;  set; }
+        public string? HistoryDateTime { get;  set; }
+        public string? HistoryUserDisplayName { get;  set; }
+        public string? HistoryUserName { get;  set; }
+        public string? PrimaryOncologistId { get;  set; }
         public string? ExpandedDisplay { get; set; }
         public ObservableCollection<Course>? Courses { get; set; }
 
         public Patient()
         {
-            Courses = new ObservableCollection<Course>();
+            
         }
 
         public Patient(string id)

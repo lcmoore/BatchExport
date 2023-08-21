@@ -240,6 +240,12 @@ namespace BatchTools.ViewModels
             //List<string> Courses = new List<string>();
             //List<string> Plans = new List<string>();
             // create request dictionary, mapping Ids, top a dictionary of courses, mapping course names to a list of plans
+
+            // if the output file already exists, delete it
+            if (File.Exists(@"PythonScripts/tmp/output.json"))
+            {
+                File.Delete(@"PythonScripts/tmp/output.json");
+            }
             Dictionary<string, Dictionary<string, List<string>>> request = new Dictionary<string, Dictionary<string, List<string>>>();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
@@ -337,6 +343,9 @@ namespace BatchTools.ViewModels
                     // read in the json file and create a list of patients
                     string json_input = File.ReadAllText(@"PythonScripts/tmp/output.json");
                     List<Patient> patients = JsonSerializer.Deserialize<List<Patient>>(json_input)!;
+                    // replace the CurrentResults with the new results
+                    CurrentResults = new ObservableCollection<Patient>(patients);
+
 
 
                 }

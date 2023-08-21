@@ -10,20 +10,20 @@ namespace BatchTools.Models
     {
         public string? UID { get; set; }
         public string? PatientID { get; set; }
-        public string? ApprovalStatus { get; private set; }
-        public string? Comment { get; private set; }
-        public string? CreationDateTime { get; private set; }
-        public string? CreationUserName { get; private set; }
-        public string? HistoryDateTime { get; private set; }
-        public string? HistoryUserDisplayName { get; private set; }
-        public string? HistoryUserName { get; private set; }
-        public string? PlanIntent { get; private set; }
-        public string? PlanningApprovalDate { get; private set; }
-        public string? PlanningApprover { get; private set; }
-        public string? PlanningApproverDisplayName { get; private set; }
-        public string? TreatmentApprovalDate { get; private set; }
-        public string? TreatmentApprover { get; private set; }
-        public string? TreatmentApproverDisplayName { get; private set; }
+        public string? ApprovalStatus { get;  set; }
+        public string? Comment { get;  set; }
+        public string? CreationDateTime { get;  set; }
+        public string? CreationUserName { get;  set; }
+        public string? HistoryDateTime { get;  set; }
+        public string? HistoryUserDisplayName { get;  set; }
+        public string? HistoryUserName { get;  set; }
+        public string? PlanIntent { get;  set; }
+        public string? PlanningApprovalDate { get;  set; }
+        public string? PlanningApprover { get;  set; }
+        public string? PlanningApproverDisplayName { get;  set; }
+        public string? TreatmentApprovalDate { get;  set; }
+        public string? TreatmentApprover { get;  set; }
+        public string? TreatmentApproverDisplayName { get;  set; }
         public string? Name { get; set; }
         public string? Course { get; set; }
         public string? DoseUID { get; set; }

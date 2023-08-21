@@ -1,7 +1,7 @@
 import pyesapi  # pip install git+https://github.com/VarianAPIs/PyESAPI
 import argparse
 import json
-
+import os
 """
 Example JSON schema for the request.json file
 [
@@ -172,18 +172,19 @@ def getEntirePatient(patient_index, json_request,app):
         if get_all_courses:
             # create a new course object
             course_object = {}
-            course_object['Id'] = course.Id
+  
             course_object['Name'] = course.Name
             course_object['PatientId'] = json_request[patient_index]['Id']
 
-            course_object['Plans'] = []
+
             course_object['ClinicalStatus'] = str(course.ClinicalStatus)
             course_object['Comment'] = course.Comment
             course_object['CompletedDateTime'] = str(course.CompletedDateTime)
-            course_object['Diagnoses'] = str(course.Diagnoses)
+            # course_object['Diagnoses'] = str(course.Diagnoses)
             course_object['HistoryDateTime'] = str(course.HistoryDateTime)
             course_object['HistoryDisplayName'] = course.HistoryUserDisplayName
             course_object['HistoryUserName'] = course.HistoryUserName
+            course_object['Id'] = course.Id
 
             course_object['Intent'] = course.Intent
             course_object['StartDateTime'] = str(course.StartDateTime)
@@ -192,30 +193,32 @@ def getEntirePatient(patient_index, json_request,app):
                 # $"\n\nStartDate: {StartDateTime.ToString()} EndDate: {CompletedDateTime.ToString()}\nLast Modified: {HistoryDisplayName} {HistoryUserName} Date: {HistoryDateTime.ToString()}";
             course_object['ExpandedDisplay'] = "Course Name: {} (Patient Id: {})\nStatus: {}\nIntent: {}\nComments: {}\n\nStartDate: {} EndDate: {}\nLast Modified: {} {} Date: {}".format(course_object['Name'], course_object['PatientId'], course_object['ClinicalStatus'], course_object['Intent'], course_object['Comment'], course_object['StartDateTime'], course_object['CompletedDateTime'], course_object['HistoryDisplayName'], course_object['HistoryUserName'], course_object['HistoryDateTime'])
             # append the course object to the json request
+            course_object['Plans'] = []
             json_request[patient_index]['Courses'].append(course_object)
         else:
             if course.Id in course_requests_list:
                 # get the index of the course in the json request
                 course_index = course_requests_list.index(course.Id)
                 course_object = {}
-                course_object['Id'] = course.Id
+    
                 course_object['Name'] = course.Name
                 course_object['PatientId'] = json_request[patient_index]['Id']
 
-                course_object['Plans'] = json_request[patient_index]['Courses'][course_index]['Plans']
+              
                 course_object['ClinicalStatus'] = str(course.ClinicalStatus)
                 course_object['Comment'] = course.Comment
                 course_object['CompletedDateTime'] = str(course.CompletedDateTime)
-                course_object['Diagnoses'] = str(course.Diagnoses)
+                # course_object['Diagnoses'] = str(course.Diagnoses)
                 course_object['HistoryDateTime'] = str(course.HistoryDateTime)
                 course_object['HistoryDisplayName'] = course.HistoryUserDisplayName
                 course_object['HistoryUserName'] = course.HistoryUserName
+                course_object['Id'] = course.Id
           
                 course_object['Intent'] = course.Intent
                 course_object['StartDateTime'] = str(course.StartDateTime)
 
                 course_object['ExpandedDisplay'] = "Course Name: {} (Patient Id: {})\nStatus: {}\nIntent: {}\nComments: {}\n\nStartDate: {} EndDate: {}\nLast Modified: {} {} Date: {}".format(course_object['Name'], course_object['PatientId'], course_object['ClinicalStatus'], course_object['Intent'], course_object['Comment'], course_object['StartDateTime'], course_object['CompletedDateTime'], course_object['HistoryDisplayName'], course_object['HistoryUserName'], course_object['HistoryDateTime'])
-
+                course_object['Plans'] = json_request[patient_index]['Courses'][course_index]['Plans']
                 # json_request[patient_index]['Courses'].append(course_object)
                 # replace the course object in the json request
                 json_request[patient_index]['Courses'][course_index] = course_object
@@ -251,7 +254,7 @@ def getEntirePatient(patient_index, json_request,app):
                 plan_object['TreatmentApprovalDate'] = plan.TreatmentApprovalDate
                 plan_object['TreatmentApprover'] = plan.TreatmentApprover
                 plan_object['TreatmentApproverDisplayName'] = plan.TreatmentApproverDisplayName
-                plan_object['Name'] = plan.Name
+                plan_object['Name'] = plan.Id
                 plan_object['Course'] = plan.Course.Id
                 plan_object['DoseUID'] = plan.Dose.UID if plan.Dose is not None else None
                 plan_object['StructureSetUID'] = plan.StructureSet.UID if plan.StructureSet is not None else None
@@ -278,7 +281,7 @@ def getEntirePatient(patient_index, json_request,app):
                     plan_object['TreatmentApprovalDate'] = plan.TreatmentApprovalDate
                     plan_object['TreatmentApprover'] = plan.TreatmentApprover
                     plan_object['TreatmentApproverDisplayName'] = plan.TreatmentApproverDisplayName
-                    plan_object['Name'] = plan.Name
+                    plan_object['Name'] = plan.Id
                     plan_object['Course'] = plan.Course.Id
                     plan_object['DoseUID'] = plan.Dose.UID if plan.Dose is not None else None
                     plan_object['StructureSetUID'] = plan.StructureSet.UID if plan.StructureSet is not None else None
@@ -296,9 +299,13 @@ def getEntirePatient(patient_index, json_request,app):
 
 def main():
     try:
+               #change working directory to the directory of this file
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+
         # json test directory
-        dir = r'tmp\request.json'
-        output = r'tmp\output.json'
+        dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp","request.json")
+        output = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp","output.json")
         app = pyesapi.CustomScriptExecutable.CreateApplication('python_ex') 
         # open json file
         with open(dir) as f:
@@ -330,17 +337,15 @@ def main():
          # script name is used for logging
         # print("Current User: " + app.CurrentUser.ToString())
         # print([p.Id for p in app.PatientSummaries])
+    except Exception as e:
+        # write out error to log file
+        error_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp","error.txt")
+        with open(error_dir, 'w') as f:
+            f.write(str(e))
 
     finally:
         app.Dispose()
-# import json
-# def main():
-#     # some JSON:
-#     x =  {"a":"123","b":"456"}
 
-#     # parse x:
-#     y = json.dumps(x)
-#     print(y)
 if __name__ == "__main__":
 
 

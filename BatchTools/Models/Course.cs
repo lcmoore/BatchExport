@@ -14,21 +14,22 @@ namespace BatchTools.Models
         public string? PatientId { get; set; }
         public string? ExpandedDisplay { get; set; }
 
+      
+        public string? ClinicalStatus { get; set; }
+        public string? Comment { get; set; }
+        public string? CompletedDateTime { get; set; }
+        public string? Diagnoses { get; set; }
+        public string HistoryDateTime { get; set; }
+        public string? HistoryDisplayName { get; set; }
+        public string? HistoryUserName { get; set; }
+        public string? Id { get; set; }
+        public string?   Intent { get; set; }
+        public string? StartDateTime { get; set; }
         public ObservableCollection<Plan>? Plans { get; set; }
-        public string? ClinicalStatus { get; private set; }
-        public string? Comment { get; private set; }
-        public DateTime? CompletedDateTime { get; private set; }
-        public string? Diagnoses { get; private set; }
-        public DateTime HistoryDateTime { get; private set; }
-        public string? HistoryDisplayName { get; private set; }
-        public string? HistoryUserName { get; private set; }
-        public string? Id { get; private set; }
-        public string?   Intent { get; private set; }
-        public DateTime? StartDateTime { get; private set; }
 
         public Course()
         {
-            Plans = new ObservableCollection<Plan>();
+            
         }
 
         public Course(string id, string plan)

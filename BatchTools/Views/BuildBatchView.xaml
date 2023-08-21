@@ -63,7 +63,7 @@
 
                                 <Border Width="30" Height="30" CornerRadius="25">
                                     <Border.Background>
-                                        <ImageBrush Stretch="Fill" ImageSource="C:\Users\lcmoore\Source\Repos\ExportDicomPrism\ExportDicomPrism\Resources\portrait2.jpg"/>
+                                        <ImageBrush Stretch="Fill" ImageSource="/Resources/portrait2.jpg"/>
                                     </Border.Background>
                                 </Border>
                                 <TextBlock Text="{Binding Display}" Foreground="white" FontSize="12" FontWeight="Medium" VerticalAlignment="Center"
@@ -76,10 +76,10 @@
                             <StackPanel Background="#182B49" Orientation="Horizontal" ToolTip="Patient" Width="400" >
                                 <Border Width="30" Height="30" CornerRadius="25">
                                     <Border.Background>
-                                        <ImageBrush Stretch="Fill" ImageSource="C:\Users\lcmoore\Source\Repos\ExportDicomPrism\ExportDicomPrism\Resources\course.jpg"/>
+                                        <ImageBrush Stretch="Fill" ImageSource="/Resources/course.jpg"/>
                                     </Border.Background>
                                 </Border>
-                                <TextBlock Text="{Binding Name}" Foreground="white" FontSize="12" FontWeight="Medium" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding Id}" Foreground="white" FontSize="12" FontWeight="Medium" VerticalAlignment="Center"
                                        Margin="10,0,0,0"/>
                             </StackPanel>
                         </Border>
@@ -90,7 +90,7 @@
                             <StackPanel Background="#182B49" Orientation="Horizontal" ToolTip="Patient" Width="300">
                                 <Border Width="30" Height="30" CornerRadius="25">
                                     <Border.Background>
-                                        <ImageBrush Stretch="Fill" ImageSource="C:\Users\lcmoore\Source\Repos\ExportDicomPrism\ExportDicomPrism\Resources\plan.jpg"/>
+                                        <ImageBrush Stretch="Fill" ImageSource="/Resources/plan.jpg"/>
                                     </Border.Background>
                                 </Border>
                                 <TextBlock Text="{Binding Name}" Foreground="white" FontSize="12" FontWeight="Medium" VerticalAlignment="Center"

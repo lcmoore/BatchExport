@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/BatchCards.xaml"/>
+                <ResourceDictionary Source="/Themes/TreeViewThemes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
