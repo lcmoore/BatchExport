@@ -127,25 +127,33 @@ namespace BatchTools.ViewModels
 
             foreach (Plan plan in CurrentBatch)
             {
+                if (plan.PatientID is null)
+                {
+                    continue;
+                }
                 if (!payload.ContainsKey(plan.PatientID))
                 {
                     payload[plan.PatientID] = new List<List<string>>();
 
                 }
-                List<string> tmpList = new List<string>();
-                tmpList.Add(plan.Course.Replace(" ", "($)"));
-                tmpList.Add(plan.Name.Replace(" ", "($)"));
-                tmpList.Add(plan.CTSeriesUID);
-                tmpList.Add(plan.DoseUID);
-                tmpList.Add(plan.StructureSetUID);
-                tmpList.Add(plan.UID);
-                //payload[plan.PatientID].Add(plan.Course);
-                //payload[plan.PatientID].Add(plan.Name);
-                //payload[plan.PatientID].Add(plan.CTSeriesUID);
-                //payload[plan.PatientID].Add(plan.DoseUID);
-                //payload[plan.PatientID].Add(plan.StructureSetUID);
-                //payload[plan.PatientID].Add(plan.UID);
-                payload[plan.PatientID].Add(tmpList);
+                try
+                {
+                    List<string> tmpList = new List<string>();
+                    tmpList.Add(plan.Course.Replace(" ", "($)"));
+                    tmpList.Add(plan.Name.Replace(" ", "($)"));
+                    tmpList.Add(plan.CTSeriesUID);
+                    tmpList.Add(plan.DoseUID);
+                    tmpList.Add(plan.StructureSetUID);
+                    tmpList.Add(plan.UID);
+                    payload[plan.PatientID].Add(tmpList);
+
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+
+               
 
 
             }
