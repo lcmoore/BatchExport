@@ -62,7 +62,7 @@ namespace BatchTools.ViewModels
             _eventAggregator = eventAggregator;
             _dialogService = dialogService;
             _eventAggregator.GetEvent<AddBatchItem>().Subscribe(AddItem);
-            _eventAggregator.GetEvent<PublishSummaries>().Subscribe(ReceiveSummaries);
+            //_eventAggregator.GetEvent<PublishSummaries>().Subscribe(ReceiveSummaries);
             _eventAggregator.GetEvent<AddItemEvent>().Subscribe(ParsePlanString);
             _eventAggregator.GetEvent<ExportLocalEvent>().Subscribe(ExportLocal);
             _eventAggregator.GetEvent<ExportMimEvent>().Subscribe(ExportMim);
@@ -72,6 +72,7 @@ namespace BatchTools.ViewModels
             SaveBatchCommand = new DelegateCommand(SaveBatch);
             LoadBatchCommand = new DelegateCommand(LoadBatch);
             ClearCurrentBatchCommand = new DelegateCommand(ClearCurrentBatch);
+            ReceiveSummaries();
 
         }
 
@@ -294,141 +295,49 @@ namespace BatchTools.ViewModels
         }
         private void LoadBatch()
         {
-            List<Patient> patientCache = new List<Patient>();
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
+            CurrentBatch.Clear();
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
-                openFileDialog.Filter = "CSV file (*.csv)|*.csv| All Files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
+                openFileDialog.Filter = "Json files (*.json)|*.json|Text files (*.txt)|*.txt";
+                //openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     //Get the path of specified file
-                    filePath = openFileDialog.FileName;
-                    using (TextFieldParser csvParser = new TextFieldParser(filePath))
+                    string filePath = openFileDialog.FileName;
+                    string json = File.ReadAllText(filePath);
+                    var CurrentBatchList = JsonConvert.DeserializeObject<List<Plan>>(json);
+                    foreach (Plan plan in CurrentBatchList)
                     {
-                        //csvParser.CommentTokens = new string[] { "#" };
-                        csvParser.SetDelimiters(new string[] { "," });
-                        csvParser.HasFieldsEnclosedInQuotes = true;
-
-                        while (!csvParser.EndOfData)
-                        {
-                            string[] fields = csvParser.ReadFields();
-                            string id = fields[0];
-                            string loadedCourse = 2 <= fields.Length ? fields[1] : "";
-                            string loadedPlan = 3 <= fields.Length ? fields[2] : "";
-                            //patientCache.Add(new Patient(id));
-                            var newPat = new Patient(id, loadedCourse, loadedPlan);
-
-                            //var newPat = patientCache.Where(p => p.Id.Equals(id)).Single(); // finds the patient in the cache
-
-
-
-                            foreach (var course in newPat.Courses)
-                            {
-                                if (course.Name.Equals(loadedCourse))
-                                {
-                                    foreach (var plan in course.Plans)
-                                    {
-                                        if (plan.Name.Equals(loadedPlan))
-                                        {
-                                            CurrentBatch.Add(plan);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-
-                        //}
-
-                        //    //Read the contents of the file into a stream
-                        //  var fileStream = openFileDialog.OpenFile();
-
-                        //using (StreamReader reader = new StreamReader(fileStream))
-                        //{
-                        //    fileContent = reader.ReadToEnd();
-                        //    var items = fileContent.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
-                        //    HashSet<string> patList = new HashSet<string>();
-                        //    foreach (var item in items)
-                        //    {
-                        //        patList.Add(item.Split(',')[0]); // patlist is a list of IDs
-
-                        //    }
-                        //    foreach (var pat in patList)
-                        //    {
-                        //        patientCache.Add(new Patient(pat)); // creates the Patient object and adds to list
-                        //    }
-                        //    foreach (var item in items)
-                        //    {
-                        //        if (item.Length < 3)
-                        //        {
-                        //            continue;
-                        //        }
-                        //        var list = item.Split(' '); // split on white space (should give {id, course, plan})
-                        //        var tmpPatID = list[0];
-                        //        var tmpCourse = list[1];
-                        //        var tmpPlan = list[2];
-
-                        //        var newPat = patientCache.Where(p => p.Id.Equals(tmpPatID)).Single(); // finds the patient in the cache
-
-
-
-                        //        foreach (var course in newPat.Courses)
-                        //        {
-                        //            if (course.Name.Equals(tmpCourse))
-                        //            {
-                        //                foreach (var plan in course.Plans)
-                        //                {
-                        //                    if (plan.Name.Equals(tmpPlan))
-                        //                    {
-                        //                        CurrentBatch.Add(plan);
-                        //                        break;
-                        //                    }
-                        //                }
-                        //            }
-                        //        }
-
-                        //    }
-
+                        CurrentBatch.Add(plan);
                     }
+           
                 }
+
             }
 
+
+      
 
         }
         private void SaveBatch()
         {
-            string writestr = "";
-            var cbList = CurrentBatch.ToList();
-            var csv = new StringBuilder();
-            foreach (var plan in cbList)
-            {
-                var tmpString = $"{plan.PatientID}, {plan.Course}, {plan.Name}";
-                csv.AppendLine(tmpString);
-                //writestr += System.Environment.NewLine;
-            }
+            // firtst, a save file dialog to find the location to save the file
             SaveFileDialog sd = new SaveFileDialog();
-            sd.Filter = "CSV file (*.csv)|*.csv| All Files (*.*)|*.*";
-            sd.DefaultExt = "csv";
+            // save type will be .json, so the filter is set to that
+            sd.Filter = "Json files (*.json)|*.json|Text files (*.txt)|*.txt";
+            sd.DefaultExt = "json";
 
             if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                using (StreamWriter sw = new StreamWriter(sd.FileName))
-                { //// continue here
-
-                    sw.Write(csv);
-                    sw.Flush();
-                    sw.Close();
-
-                }
-
+                var current_batch_json = JsonConvert.SerializeObject(CurrentBatch);
+                File.WriteAllText(sd.FileName, current_batch_json);
             }
+
+
 
         }
         private void RemovePlans()
@@ -480,9 +389,15 @@ namespace BatchTools.ViewModels
         //    }
         //}
 
-        private void ReceiveSummaries(ObservableCollection<UISummary> obj)
+        private void ReceiveSummaries()
         {
-            Summaries = obj;
+            Summaries = new ObservableCollection<UISummary>
+            {
+                new UISummary() { FirstName = "Test", LastName = "Test", Id = "12345678" }
+            };
+         
+
+
         }
 
         private void AddPlan()

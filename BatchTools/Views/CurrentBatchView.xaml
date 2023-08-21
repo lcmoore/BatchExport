@@ -55,18 +55,18 @@
                 <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="1" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5" >
+            <!--<Border Grid.Row="1" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5" >
                 <Button Content="Add Plan" FontWeight="Bold"
-                        IsEnabled="False"
+                       
                         Command="{Binding AddPlanCommand}" 
                         Margin="10" Background="#FFCD00" 
                         BorderThickness="0" BorderBrush="Transparent"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Add a single plan to the current batch. (Not available in current version)"/>
-            </Border>
+            </Border>-->
 
-            <Border Grid.Row="1" Grid.Column="2"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5">
+            <Border Grid.Row="1" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5">
                 <Button Content="Remove Plan" FontWeight="Bold" 
                         Command="{Binding RemovePlansCommand}"
                         Margin="10" Background="#FFCD00" BorderThickness="0"

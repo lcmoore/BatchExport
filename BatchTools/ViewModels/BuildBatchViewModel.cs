@@ -17,6 +17,7 @@ using System.IO;
 using System.Text.Json;
 using Microsoft.Windows.Themes;
 using System.Windows;
+using BatchTools.Events;
 
 namespace BatchTools.ViewModels
 {
@@ -63,29 +64,12 @@ namespace BatchTools.ViewModels
 
         private readonly IDialogService _dialogService;
 
-        private bool _summariesLoaded = false;
 
-        public bool SummariesLoaded
-        {
-            get { return _summariesLoaded; }
-            set
-            {
-                SetProperty(ref _summariesLoaded, value);
-                //AddQueryItemCommand.RaiseCanExecuteChanged();
-                //_eventAggregator.GetEvent<PublishSummaries>().Publish(Summaries);
-                //_eventAggregator.GetEvent<CloseLoadingDialog>().Publish("Close");
 
-            }
-        }
 
-        //private ObservableCollection<string> _currentText;
         private IEventAggregator _eventAggregator;
 
-        //public ObservableCollection<string> CurrentText
-        //{
-        //    get { return _currentText; }
-        //    set { SetProperty(ref _currentText, value); }
-        //}
+
 
         #endregion
         #region Command Declarations
@@ -106,8 +90,8 @@ namespace BatchTools.ViewModels
 
         public BuildBatchViewModel(IDialogService dialogService, IEventAggregator eventAggregator)
         {
-            ImportQueryCommand = new DelegateCommand(ImportQuery).ObservesCanExecute(() => SummariesLoaded);
-            AddQueryItemCommand = new DelegateCommand(AddQueryItem, CanAddQueryItem);
+            ImportQueryCommand = new DelegateCommand(ImportQuery);
+            AddQueryItemCommand = new DelegateCommand(AddQueryItem);
 
             StackPanelClickCommand = new DelegateCommand<object>(StackPanelClick);
 
@@ -119,7 +103,7 @@ namespace BatchTools.ViewModels
             _dialogService = dialogService;
 
 
-            LoadSummaries();
+ 
 
         }
         #endregion
@@ -154,48 +138,9 @@ namespace BatchTools.ViewModels
 
 
 
-        private bool CanAddQueryItem()
-        {
-            if (SummariesLoaded)
-            {
-                AddItemText = "Add Item";
-            }
-            return SummariesLoaded;
-        }
-
-
-        private async void LoadSummaries()
-        {
-
-            //await AppComThread.Instance.InvokeAsync(async () =>
-            //{
-
-            //    Summaries = new ObservableCollection<UISummary>(await AppComThread.Instance.GetValueAsync(sac =>
-            //    {
-            //        return sac.Application.PatientSummaries.Select(p => new UISummary()
-            //        {
-            //            Id = p.Id,
-            //            FirstName = p.FirstName,
-            //            LastName = p.LastName,
-
-
-            //        }).ToList();
-            //    }));
-            //    SummariesLoaded = true;
 
 
 
-            //});
-            Summaries = new ObservableCollection<UISummary>
-            {
-                new UISummary() { FirstName = "Test", LastName = "Test", Id = "12345678" }
-            };
-            SummariesLoaded = true;
-
-
-
-
-        }
 
         private void AddQueryItem()
         {
@@ -220,26 +165,6 @@ namespace BatchTools.ViewModels
 
         private void ImportQuery()
         {
-            //// create a test patient
-            //Patient testPatient = new Patient("12345678");
-            //testPatient.Courses.Add(new Course("12345678", "Test Course"));
-            //List<Patient> pat_list = new List<Patient>();
-            //pat_list.Add(testPatient);
-            //string json_test = JsonSerializer.Serialize(pat_list);
-            //File.WriteAllText(@"./test.json", json_test);
-
-            //// read in the json file and create a list of patients
-            //string json_input = File.ReadAllText(@"./output.json");
-            //List<Patient> patients = JsonSerializer.Deserialize<List<Patient>>(json_input)!;
-
-
-
-
-
-            //List<string> iDs = new List<string>();
-            //List<string> Courses = new List<string>();
-            //List<string> Plans = new List<string>();
-            // create request dictionary, mapping Ids, top a dictionary of courses, mapping course names to a list of plans
 
             // if the output file already exists, delete it
             if (File.Exists(@"PythonScripts/tmp/output.json"))
