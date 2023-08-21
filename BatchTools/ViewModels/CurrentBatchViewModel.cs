@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace BatchTools.ViewModels
 {
@@ -25,12 +26,13 @@ namespace BatchTools.ViewModels
     {
 
         #region Commands
-        public DelegateCommand AddPlanCommand { get; private set; }
+
         public DelegateCommand<object> PlanListViewItemActivateCommand { get; private set; }
         public DelegateCommand RemovePlansCommand { get; private set; }
         public DelegateCommand SaveBatchCommand { get; private set; }
         public DelegateCommand LoadBatchCommand { get; private set; }
         public DelegateCommand ClearCurrentBatchCommand { get; private set; }
+        public DelegateCommand CreateBatchCommand { get; private set; }
         #endregion
 
         #region Interfaces
@@ -39,8 +41,8 @@ namespace BatchTools.ViewModels
         #endregion
 
         #region Collections
-        private ObservableCollection<UISummary> _summaries;
-        public ObservableCollection<UISummary> Summaries { get { return _summaries; } set { SetProperty(ref _summaries, value); } }
+
+       
         private ObservableCollection<Plan> _currentBatch = new ObservableCollection<Plan>();
         public ObservableCollection<Plan> CurrentBatch
         {
@@ -62,17 +64,147 @@ namespace BatchTools.ViewModels
             _eventAggregator = eventAggregator;
             _dialogService = dialogService;
             _eventAggregator.GetEvent<AddBatchItem>().Subscribe(AddItem);
-            //_eventAggregator.GetEvent<PublishSummaries>().Subscribe(ReceiveSummaries);
-            _eventAggregator.GetEvent<AddItemEvent>().Subscribe(ParsePlanString);
+
+
             _eventAggregator.GetEvent<ExportLocalEvent>().Subscribe(ExportLocal);
-            _eventAggregator.GetEvent<ExportMimEvent>().Subscribe(ExportMim);
-            AddPlanCommand = new DelegateCommand(AddPlan);
+
+ 
             PlanListViewItemActivateCommand = new DelegateCommand<object>(PlanListViewItemActivate);
             RemovePlansCommand = new DelegateCommand(RemovePlans);
             SaveBatchCommand = new DelegateCommand(SaveBatch);
             LoadBatchCommand = new DelegateCommand(LoadBatch);
             ClearCurrentBatchCommand = new DelegateCommand(ClearCurrentBatch);
-            ReceiveSummaries();
+            CreateBatchCommand = new DelegateCommand(CreateBatch);
+     
+
+        }
+
+        private void CreateBatch()
+        {
+
+
+    
+            Dictionary<string, Dictionary<string, List<string>>> request = new Dictionary<string, Dictionary<string, List<string>>>();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+
+                    string[] lines = File.ReadAllLines(openFileDialog.FileName);
+                    foreach (string line in lines)
+                    {
+                        string course = null;
+                        string plan = null;
+
+
+                        string[] columns = line.Split(',');
+
+
+                        string id = columns.ElementAt(0);
+                        // add leading 0 if necessary, since csv removes leading 0s
+                        if (columns.ElementAt(0).Length == 7)
+                        {
+                            id = "0" + columns.ElementAt(0);
+                        }
+                        // check if columns length is > 1
+                        if (columns.Length > 1)
+                        {
+                            course = columns.ElementAt(1);
+                        }
+
+                        // check if columns length is > 2
+                        if (columns.Length > 2)
+                        {
+                            plan = columns.ElementAt(2);
+                        }
+                        // if id not in requests keys, create a new object
+                        if (!request.ContainsKey(id))
+                        {
+                            request.Add(id, new Dictionary<string, List<string>>());
+                        }
+                        // if course not in requests[id] keys, create a new object
+                        if (course != null && !request[id].ContainsKey(course))
+                        {
+                            request[id].Add(course, new List<string>());
+                        }
+                        // if plan not in requests[id][course] keys, add it
+                        if (course != null && plan != null && !request[id][course].Contains(plan))
+                        {
+                            request[id][course].Add(plan);
+                        }
+
+
+
+
+
+
+
+
+
+                    }
+                    List<Patient> patient_requests = new List<Patient>();
+                    foreach (KeyValuePair<string, Dictionary<string, List<string>>> entry in request)
+                    {
+                        Patient thisPatient = new Patient(entry.Key, entry.Value);
+                        patient_requests.Add(thisPatient);
+
+
+
+                    }
+                    // convert request dictionary to json
+                    string json = System.Text.Json.JsonSerializer.Serialize(patient_requests);
+                    // write json to file
+                    File.WriteAllText(@"PythonScripts/tmp/request.json", json);
+                    // run python script
+                    System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
+                    //python interprater location
+                    start.FileName = "PythonScripts/venv/Scripts/python.exe";
+                    //argument with file name and input parameters
+                    start.Arguments = string.Format("{0}", "PythonScripts/GetPatients.py");
+                    start.UseShellExecute = false;// Do not use OS shell
+                    start.CreateNoWindow = true; // We don't need new window
+                    start.RedirectStandardOutput = true;// Any output, generated by application will be redirected back
+                    start.RedirectStandardError = true; // Any error in standard output will be redirected back (for example exceptions)
+                    start.LoadUserProfile = true;
+                    using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(start))
+                    {
+                        using (StreamReader reader = process.StandardOutput)
+                        {
+                            string stderr = process.StandardError.ReadToEnd(); // Here are the exceptions from our Python script
+                            string result = reader.ReadToEnd(); // Here is the result of StdOut(for example: print "test")
+
+
+                        }
+                    }
+
+                    // read in the json file and create a list of patients
+                    string json_input = File.ReadAllText(@"PythonScripts/tmp/output.json");
+                    List<Patient> patients = System.Text.Json.JsonSerializer.Deserialize<List<Patient>>(json_input)!;
+                    foreach (Patient patient in patients)
+                    {
+                        AddItem(patient);
+                    }
+               
+                    
+
+
+
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+
+
+            }
+
+
+
+
+
+
 
         }
 
@@ -80,25 +212,7 @@ namespace BatchTools.ViewModels
         #endregion
 
         #region Data Methods
-        public void PayloadBuilderJSON(string dir)
-        {
-            List<string> output_dir = new List<string>();
-            foreach (string substring in dir.Split('|')[0].Split('\\'))
-            {
-                output_dir.Add(substring);
-            }
 
-            List<string> args = new List<string>();
-            foreach (var arg in dir.Split('|')[1].Split(','))
-            {
-                args.Add(arg);
-
-            }
-            Dictionary<string, List<List<string>>> myDict = new Dictionary<string, List<List<string>>>();
-
-
-            return;
-        }
         private string PayloadBuilder(string dir)
         {
 
@@ -214,77 +328,11 @@ namespace BatchTools.ViewModels
 
         }
 
-        private string MimPayloadBuilder(string[] args)
-        {
-
-            Dictionary<string, List<string>> payload = new Dictionary<string, List<string>>();
-            payload["args"] = new List<string>();
-            foreach (string arg in args)
-            {
-                payload["args"].Add(arg);
-            }
-            foreach (Plan plan in CurrentBatch)
-            {
-                if (!payload.ContainsKey(plan.PatientID))
-                {
-                    payload[plan.PatientID] = new List<string>();
-
-                }
-
-                payload[plan.PatientID].Add(plan.CTSeriesUID);
-                payload[plan.PatientID].Add(plan.DoseUID);
-                payload[plan.PatientID].Add(plan.StructureSetUID);
-                payload[plan.PatientID].Add(plan.UID);
-
-
-            }
-
-            var payloadstr = "{";
-            foreach (KeyValuePair<string, List<string>> entry in payload)
-            {
-                if (!payloadstr.Equals("{"))
-                {
-                    payloadstr += "|";
-
-                }
-                payloadstr += entry.Key + ":";
-                payloadstr += "[";
-                foreach (string element in entry.Value)
-                {
-                    if (element != entry.Value.Last())
-                    {
-                        payloadstr += element + ",";
-                    }
-                    else
-                    {
-                        payloadstr += element;
-                        payloadstr += "]";
-
-                    }
-
-                }
-
-
-            }
-
-
-            payloadstr += "}";
-            return payloadstr;
-
-        }
+       
         #endregion
 
         #region Command Methods
-        private void ExportMim(Object args)
-        {
-            string argstring = (String)args;
-            string[] arguments = argstring.Split(',');
-            string payload = MimPayloadBuilder(arguments);
-            var thisdir = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
 
-            var process = Process.Start(thisdir + "\\MimMove\\MimBatchExport.exe", payload);
-
-        }
         private void ExportLocal(Object args)
         {
             string dir = (String)args;
@@ -366,67 +414,9 @@ namespace BatchTools.ViewModels
             SelectedPlanItems.Add((Plan)source.SelectedItem);
 
         }
-        private void ParsePlanString(string obj)
-        {
-
-        }
-        //private void ParsePlanString(string obj)
-        //{
-        //    // check cache here
-        //    var arguments = obj.SplitOnWhiteSpace();
-        //    var patientID = ArgumentParser.GetPatientId(arguments);
-        //    var course = ArgumentParser.GetCourseId(arguments);
-        //    var plan = ArgumentParser.GetPlanSetup(arguments);
-        //    var tmpPat = new Patient(patientID);
-        //    foreach (var patCourse in tmpPat.Courses)
-        //    {
-        //        if (patCourse.Name.Equals(course))
-        //        {
-        //            foreach (var patPlan in patCourse.Plans)
-        //            {
-        //                // TODO: fix
-        //                if (patPlan.UID.Equals(plan))
-        //                {
-        //                    AddItem(patPlan);
-        //                    break;
-
-        //                }
-
-        //            }
-        //        }
-        //    }
-        //}
-
-        private void ReceiveSummaries()
-        {
-            Summaries = new ObservableCollection<UISummary>
-            {
-                new UISummary() { FirstName = "Test", LastName = "Test", Id = "12345678" }
-            };
-         
+       
 
 
-        }
-
-        private void AddPlan()
-        {
-            var p = new DialogParameters();
-            var sendSummaries = Summaries.ToList();
-            p.Add("Summaries", sendSummaries);
-
-            _dialogService.Show("AddQueryItemDialog", p, result =>
-            {//callback
-                if (result.Result == ButtonResult.OK)
-                {
-
-                }
-
-
-
-            });
-
-
-        }
 
         private void AddItem(object obj)
         {
@@ -463,23 +453,9 @@ namespace BatchTools.ViewModels
 
         }
 
-        public ObservableCollection<Plan> GetBatch()
-        {
-            return CurrentBatch;
-        }
 
-        public void ClearBatch()
-        {
-            CurrentBatch.Clear();
-        }
 
-        public void DeleteBatchItem(string item_string)
-        {
-            foreach (var plan in CurrentBatch.Where(p => p.Name == item_string))
-            {
-                CurrentBatch.Remove(plan);
-            }
-        }
+
         #endregion
 
 

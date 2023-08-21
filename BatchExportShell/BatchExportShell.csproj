@@ -5,12 +5,20 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\blue-database-removebg-preview.png" />
+    <None Remove="Resources\computer-removebg-preview.png" />
     <None Remove="Resources\course.jpg" />
     <None Remove="Resources\plan.jpg" />
     <None Remove="Resources\portrait2.jpg" />
     <None Remove="Resources\Trident.PNG" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\blue-database-removebg-preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\computer-removebg-preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\course.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

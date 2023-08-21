@@ -61,7 +61,7 @@
         <Button HorizontalAlignment="Center" Template="{DynamicResource ButtonTemplate1}" Grid.Row="2" Grid.Column="1" Command="{Binding ExportLocalCommand}" Background="Transparent"  BorderThickness="0">
 
 
-            <Image Source="C:\Users\lcmoore\Source\Repos\ExportDicomPrism\ExportDicomPrism\Resources\computer-removebg-preview.png">
+            <Image Source="/Resources/computer-removebg-preview.png">
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Style.Triggers>
@@ -133,7 +133,7 @@
         <Button Template="{DynamicResource ButtonTemplate1}" Grid.Row="2" Grid.Column="3" Command="{Binding ExportMimCommand}" Background="Transparent"  BorderThickness="0">
 
 
-            <Image Source="C:\Users\lcmoore\Source\Repos\ExportDicomPrism\ExportDicomPrism\Resources\mim_logo.png">
+            <Image Source="/Resources/blue-database-removebg-preview.png">
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Style.Triggers>

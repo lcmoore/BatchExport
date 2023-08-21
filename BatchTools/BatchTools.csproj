@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Accord.Math" Version="3.8.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
@@ -30,6 +29,14 @@
 
   <ItemGroup>
     <Folder Include="PythonScripts\tmp\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\lcmoore\.nuget\packages\accord\3.8.0\build\Accord.dll.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\lcmoore\.nuget\packages\accord\3.8.0\build\Accord.dll.config" />
   </ItemGroup>
 
 </Project>

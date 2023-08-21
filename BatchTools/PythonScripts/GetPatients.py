@@ -132,28 +132,13 @@ def getEntirePatient(patient_index, json_request,app):
     """
 
 
-    # FirstName = sc.Patient.FirstName;
-    # LastName = sc.Patient.LastName;
-    # Sex = sc.Patient.Sex;
-    # Comment = sc.Patient.Comment;
-    # CreationDateTime = sc.Patient.CreationDateTime;
-    # DateOfBirth = sc.Patient.DateOfBirth;
-    # HistoryDateTime = sc.Patient.HistoryDateTime;
-    # HistoryUserDisplayName = sc.Patient.HistoryUserDisplayName;
-    # HistoryUserName = sc.Patient.HistoryUserName;
-    # PrimaryOncologistId = sc.Patient.PrimaryOncologistId;
-
-    # Display = $"{LastName}, {FirstName} ({Id})";
-    # ExpandedDisplay = $"Patient Name: {FirstName} {LastName} Id: ({this.Id})\nDOB: {DateOfBirth.ToString()}\n\nProfile Created: {CreationDateTime.ToString()}" +
-    # $"\nLast Modified: {HistoryUserDisplayName} ({HistoryUserName}) Date: {HistoryDateTime.ToString()}";
-
     # fill out the patient information
     json_request[patient_index]['FirstName'] = esapi_patient.FirstName
     json_request[patient_index]['LastName'] = esapi_patient.LastName
     json_request[patient_index]["Sex"] = esapi_patient.Sex
     json_request[patient_index]["Comment"] = esapi_patient.Comment
     json_request[patient_index]["CreationDateTime"] = str(esapi_patient.CreationDateTime)
-    json_request[patient_index]["DateOfBirth"] = esapi_patient.DateOfBirth
+    json_request[patient_index]["DateOfBirth"] = str(esapi_patient.DateOfBirth)
     json_request[patient_index]["HistoryDateTime"] = str(esapi_patient.HistoryDateTime)
     json_request[patient_index]["HistoryUserDisplayName"] = esapi_patient.HistoryUserDisplayName
     json_request[patient_index]["HistoryUserName"] = esapi_patient.HistoryUserName
@@ -233,6 +218,7 @@ def getEntirePatient(patient_index, json_request,app):
             get_all_plans = True
         else:
             plan_requests_list = [request["Name"].strip() for request in course['Plans']]
+            get_all_plans = False
 
         easpi_plans = [c.PlanSetups for c in easpi_courses if c.Id == course['Id']][0]
         for plan_index, plan in enumerate(easpi_plans):
@@ -248,10 +234,10 @@ def getEntirePatient(patient_index, json_request,app):
                 plan_object['HistoryUserDisplayName'] = plan.HistoryUserDisplayName
                 plan_object['HistoryUserName'] = plan.HistoryUserName
                 plan_object['PlanIntent'] = plan.PlanIntent
-                plan_object['PlanningApprovalDate'] = plan.PlanningApprovalDate
+                plan_object['PlanningApprovalDate'] = str(plan.PlanningApprovalDate)
                 plan_object['PlanningApprover'] = plan.PlanningApprover
                 plan_object['PlanningApproverDisplayName'] = plan.PlanningApproverDisplayName
-                plan_object['TreatmentApprovalDate'] = plan.TreatmentApprovalDate
+                plan_object['TreatmentApprovalDate'] = str(plan.TreatmentApprovalDate)
                 plan_object['TreatmentApprover'] = plan.TreatmentApprover
                 plan_object['TreatmentApproverDisplayName'] = plan.TreatmentApproverDisplayName
                 plan_object['Name'] = plan.Id
@@ -275,10 +261,10 @@ def getEntirePatient(patient_index, json_request,app):
                     plan_object['HistoryUserDisplayName'] = plan.HistoryUserDisplayName
                     plan_object['HistoryUserName'] = plan.HistoryUserName
                     plan_object['PlanIntent'] = plan.PlanIntent
-                    plan_object['PlanningApprovalDate'] = plan.PlanningApprovalDate
+                    plan_object['PlanningApprovalDate'] = str(plan.PlanningApprovalDate)
                     plan_object['PlanningApprover'] = plan.PlanningApprover
                     plan_object['PlanningApproverDisplayName'] = plan.PlanningApproverDisplayName
-                    plan_object['TreatmentApprovalDate'] = plan.TreatmentApprovalDate
+                    plan_object['TreatmentApprovalDate'] = str(plan.TreatmentApprovalDate)
                     plan_object['TreatmentApprover'] = plan.TreatmentApprover
                     plan_object['TreatmentApproverDisplayName'] = plan.TreatmentApproverDisplayName
                     plan_object['Name'] = plan.Id
