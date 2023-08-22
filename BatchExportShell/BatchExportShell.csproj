@@ -3,6 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <AssemblyName>BatchExport</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\blue-database-removebg-preview.png" />
@@ -31,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="squirrel.windows" Version="2.0.1" />
 
   </ItemGroup>
   <ItemGroup>

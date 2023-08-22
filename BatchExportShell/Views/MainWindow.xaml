@@ -106,17 +106,7 @@
                         BorderThickness="0"
                         Command="{Binding NavigateCommand}"
                         CommandParameter="ExportBatchView"/>
-                <!--<Button Content="Clear Check" Grid.Row="3"
-                        Background="Transparent"
-                        Foreground="White"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        BorderThickness="0"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="ClearCheckView"/>-->
-
-
-                <!--<Image Grid.Row="4" Source="R:\RESEARCH\KMoore\Lcmoore\BatchExport\ExportDicomPrism\Resources\Trident.PNG" Margin="0,0,0,-15"/>-->
+               
                 <Image Grid.Row="4" Margin="0,0,0,-15" Width="300">
                     <Image.Source>
                         <BitmapImage DecodePixelWidth="300" UriSource="/Resources/Trident.PNG"/>

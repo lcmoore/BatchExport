@@ -199,19 +199,6 @@
                 <Label  Content="Port:" Foreground="White" HorizontalAlignment="Right"/>
                 <TextBox Text="{Binding VarianPort}" Width="200"/>
             </StackPanel>
-            <!--<Border Grid.Row="0" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="1" Margin="45,0,0,0" MaxWidth="200">-->
-            <!--<Button Grid.Row="2" Content="Export MIM"
-                        Background="#FFCD00" Margin="5" 
-                        Foreground="black" FontWeight="Medium"
-                        Command="{Binding ExportMimCommand}"
-                        BorderThickness="0" MaxWidth="200"
-                        ToolTipService.InitialShowDelay="0"
-                        ToolTipService.ShowDuration="10000"
-                        ToolTip="Not currently 100% functional."
-                        
-                        />-->
-
-            <!--</Border>-->
 
         </StackPanel>
     </Grid>

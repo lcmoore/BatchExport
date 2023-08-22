@@ -14,14 +14,6 @@ namespace BatchTools
     {
         private readonly IRegionManager _regionManager;
 
-        // Backend Ready param here to share with other modules
-        private bool _backendReady;
-
-        public bool BackendReady
-        {
-            get { return _backendReady; }
-            set { _backendReady = value; }
-        }
 
 
         public BatchToolsModule(IRegionManager regionManager)
@@ -32,7 +24,7 @@ namespace BatchTools
         public void OnInitialized(IContainerProvider containerProvider)
         {
             // view injection 
-            BackendReady = true;
+     
             IRegion region = _regionManager.Regions["ContentRegion"];
 
             var bbv = containerProvider.Resolve<BuildBatchView>();
@@ -42,7 +34,7 @@ namespace BatchTools
             region.Add(cbv);
             region.Add(ebv);
 
-            _regionManager.Regions["ContentRegion"].Context = BackendReady;
+   
 
         }
 

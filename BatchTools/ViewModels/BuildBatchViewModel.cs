@@ -58,14 +58,6 @@ namespace BatchTools.ViewModels
             set { SetProperty(ref _currentResults, value); }
         }
 
-        private ObservableCollection<Patient> _tmpCurrentResults = new ObservableCollection<Patient>();
-
-        public ObservableCollection<Patient> TmpCurrentResults
-        {
-            get { return _tmpCurrentResults; }
-            set { SetProperty(ref _tmpCurrentResults, value); }
-        }
-
         private IEventAggregator _eventAggregator;
 
 
@@ -73,15 +65,8 @@ namespace BatchTools.ViewModels
         #endregion
         #region Command Declarations
 
-        public DelegateCommand<object> ImportQueryCommand { get;  set; }
-        public DelegateCommand SendQueryCommand { get; private set; }
-        public DelegateCommand EclipseQueryCommand { get; private set; }
-        public DelegateCommand AddQueryItemCommand { get; private set; }
-        public DelegateCommand GetPatientsCommand { get; private set; }
-        public DelegateCommand<object> TextInputChanged { get; private set; }
-        public DelegateCommand<object> TreeViewSelectionChangedCommand { get; private set; }
+        public DelegateCommand<object> ImportQueryCommand { get;  set; }   
         public DelegateCommand<object> StackPanelClickCommand { get; private set; }
-        public DelegateCommand RemovePatientCommand { get; private set; }
         public DelegateCommand ResetCurrentResultsCommand { get; private set; }
         public DelegateCommand AddSelectionToBatchCommand { get; private set; }
         #endregion
@@ -90,10 +75,7 @@ namespace BatchTools.ViewModels
         public BuildBatchViewModel(IEventAggregator eventAggregator)
         {
             ImportQueryCommand = new DelegateCommand<object>(ImportQueryAsync).ObservesCanExecute(()=>BackendReady);
-
-
             StackPanelClickCommand = new DelegateCommand<object>(StackPanelClick);
-
             ResetCurrentResultsCommand = new DelegateCommand(ResetCurrentResults);
             AddSelectionToBatchCommand = new DelegateCommand(AddSelectionToBatch);
 
@@ -109,10 +91,8 @@ namespace BatchTools.ViewModels
         #region Methods
 
         private void AddSelectionToBatch()
-        {
-
+        {        
             _eventAggregator.GetEvent<AddBatchItem>().Publish(SelectedItem.FirstOrDefault());
-
 
         }
 
@@ -133,13 +113,6 @@ namespace BatchTools.ViewModels
 
 
         }
-
-
-
-
-
-
-
 
 
 
@@ -264,16 +237,11 @@ namespace BatchTools.ViewModels
 
             }
 
-
-
-
-
-            
+ 
 
         }
         private async void ImportQueryAsync(Object obj)
         {
-
 
             // if the output file already exists, delete it
             if (File.Exists(@"PythonScripts/tmp/output.json"))

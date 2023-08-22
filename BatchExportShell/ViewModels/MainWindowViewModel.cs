@@ -8,12 +8,10 @@ namespace BatchExportShell.ViewModels
     {
         private readonly IRegionManager _regionManager;
 
-
         public DelegateCommand<string> NavigateCommand { get; set; }
         public MainWindowViewModel(IRegionManager regionManager)
         {
-          
-            
+        
             NavigateCommand = new DelegateCommand<string>(Navigate);
             _regionManager = regionManager;
 

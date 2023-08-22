@@ -24,7 +24,7 @@ namespace BatchTools.ViewModels
 {
     public class CurrentBatchViewModel : BindableBase
     {
-
+        #region Declarations
         private bool _backendReady = true;
 
         public bool BackendReady
@@ -39,6 +39,7 @@ namespace BatchTools.ViewModels
             get { return _createBatchText; }
             set { SetProperty(ref _createBatchText, value); }
         }
+        #endregion
 
 
 
@@ -57,7 +58,7 @@ namespace BatchTools.ViewModels
 
         #region Interfaces
         private IEventAggregator _eventAggregator;
-        private readonly IDialogService _dialogService;
+      
         #endregion
 
         #region Collections
@@ -79,13 +80,12 @@ namespace BatchTools.ViewModels
         #endregion
 
         #region Constructor
-        public CurrentBatchViewModel(IDialogService dialogService, IEventAggregator eventAggregator)
+        public CurrentBatchViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _dialogService = dialogService;
+        
+
             _eventAggregator.GetEvent<AddBatchItem>().Subscribe(AddItem);
-
-
             _eventAggregator.GetEvent<ExportLocalEvent>().Subscribe(ExportLocal);
 
  
@@ -289,23 +289,18 @@ namespace BatchTools.ViewModels
                             request[id][course].Add(plan);
                         }
 
-
                     }
                     List<Patient> patient_requests = new List<Patient>();
                     foreach (KeyValuePair<string, Dictionary<string, List<string>>> entry in request)
                     {
                         Patient thisPatient = new Patient(entry.Key, entry.Value);
                         patient_requests.Add(thisPatient);
-
-
-
                     }
                     // convert request dictionary to json
                     string json = System.Text.Json.JsonSerializer.Serialize(patient_requests);
                     // write json to file
                     File.WriteAllText(@"PythonScripts/tmp/request.json", json);
                     // run python script
-
                     string result = await Task.Run(() => callPythonHelper());
                     // read in the json file and create a list of patients
                     string json_input = File.ReadAllText(@"PythonScripts/tmp/output.json");
@@ -317,8 +312,6 @@ namespace BatchTools.ViewModels
                     BackendReady = true;
                     CreateBatchText = "Add Plans";
 
-
-
                 }
                 catch (Exception e)
                 {
@@ -327,15 +320,7 @@ namespace BatchTools.ViewModels
                     CreateBatchText = "Add Plans";
                 }
 
-
-
             }
-
-
-
-
-
-
 
         }
         private string callPythonHelper()
