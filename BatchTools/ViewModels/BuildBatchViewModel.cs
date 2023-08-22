@@ -18,12 +18,14 @@ using System.Text.Json;
 using Microsoft.Windows.Themes;
 using System.Windows;
 using BatchTools.Events;
+using Squirrel;
 
 namespace BatchTools.ViewModels
 {
     public class BuildBatchViewModel : BindableBase
     {
         #region Declarations
+        UpdateManager _squirrelUpdateManager;
         private bool _backendReady = true;
         public bool BackendReady
         {
@@ -80,12 +82,35 @@ namespace BatchTools.ViewModels
             AddSelectionToBatchCommand = new DelegateCommand(AddSelectionToBatch);
 
             _eventAggregator = eventAggregator;
+            CheckForUpdates();
 
         
 
 
  
 
+        }
+
+        private async void CheckForUpdates()
+        {
+            _squirrelUpdateManager = await UpdateManager.GitHubUpdateManager("https://github.com/lcmoore/BatchExport");
+            var updateInfo = await _squirrelUpdateManager.CheckForUpdate();
+            if (updateInfo.ReleasesToApply.Any())
+            {
+                var release = updateInfo.FutureReleaseEntry;
+                var version = release.Version.ToString();
+                var message = $"Version {version} is available. Would you like to update?";
+                var result = MessageBox.Show(message, "Update Available", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    await _squirrelUpdateManager.DownloadReleases(updateInfo.ReleasesToApply);
+                    await _squirrelUpdateManager.ApplyReleases(updateInfo);
+                    await _squirrelUpdateManager.UpdateApp();
+                    MessageBox.Show("Update Complete. Please restart the application.");
+                    Application.Current.Shutdown();
+                }
+            }
+           
         }
         #endregion
         #region Methods

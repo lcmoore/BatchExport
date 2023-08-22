@@ -13,6 +13,7 @@ namespace BatchTools
     public class BatchToolsModule : IModule
     {
         private readonly IRegionManager _regionManager;
+       
 
 
 
@@ -33,6 +34,7 @@ namespace BatchTools
             region.Add(bbv);
             region.Add(cbv);
             region.Add(ebv);
+
 
    
 

@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /BatchTools/PythonScripts/venv
 /TestJustId.csv
 *.json
+
+!Deployment/**

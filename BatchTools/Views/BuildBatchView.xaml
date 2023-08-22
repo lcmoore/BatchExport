@@ -126,7 +126,12 @@
                         Command="{Binding ImportQueryCommand}"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
-                        ToolTip="Load a CSV of Patient IDs. One ID per row."
+                        ToolTip="Load a CSV of patient data.&#x0a;
+                        Data format:&#x0a;
+                        MRN,Course(optional),Plan(optional)&#x0a;
+                   
+                       
+                        "
                         BorderThickness="0">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">

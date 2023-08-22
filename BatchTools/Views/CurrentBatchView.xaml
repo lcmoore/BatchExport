@@ -62,7 +62,8 @@
                         BorderBrush="Transparent"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
-                        ToolTip="Create a new batch from a csv.&#x0a;Format is MRN,Course,Plan&#x0a;"
+                        ToolTip="Create a new batch from a csv.&#x0a;Format is:&#x0a;
+                        MRN,Course(optional),Plan(optional)&#x0a;"
                         
                         >
                 <Button.Template>

@@ -8,6 +8,7 @@ namespace BatchExportShell.ViewModels
     {
         private readonly IRegionManager _regionManager;
 
+
         public DelegateCommand<string> NavigateCommand { get; set; }
         public MainWindowViewModel(IRegionManager regionManager)
         {
@@ -15,12 +16,14 @@ namespace BatchExportShell.ViewModels
             NavigateCommand = new DelegateCommand<string>(Navigate);
             _regionManager = regionManager;
 
+
         }
 
         private void Navigate(string uri)
         {
             _regionManager.RequestNavigate("ContentRegion", uri);
         }
+
 
     }
 }

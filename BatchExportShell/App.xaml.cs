@@ -4,6 +4,7 @@ using Prism.Ioc;
 using Prism.Modularity;
 using System.Windows;
 
+
 namespace BatchExportShell
 {
     /// <summary>
