@@ -65,32 +65,66 @@
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Add a single plan to the current batch. (Not available in current version)"/>
             </Border>-->
-            <Border Grid.Row="1" Grid.Column="2"  CornerRadius="20" BorderBrush="#FFCD00" 
-                    Background="#FFCD00" BorderThickness="0.25" Margin="5">
-                <Button Content="Create Batch" FontWeight="Bold" 
+
+                <Button Grid.Row ="1" Grid.Column="2" Content="{Binding CreateBatchText}" FontWeight="Bold" 
                         Command="{Binding CreateBatchCommand}"
                         Margin="10" Background="#FFCD00" BorderThickness="0"
                         BorderBrush="Transparent"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
-                        ToolTip="Create a new batch from a csv."
+                        ToolTip="Create a new batch from a csv.&#x0a;Format is MRN,Course,Plan&#x0a;"
                         
-                        />
-            </Border>
+                        >
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
 
-            <Border Grid.Row="1" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5">
-                <Button Content="Remove Plan" FontWeight="Bold" 
-                        Command="{Binding RemovePlansCommand}"
-                        Margin="10" Background="#FFCD00" BorderThickness="0"
-                        BorderBrush="Transparent"
-                        ToolTipService.InitialShowDelay="0"
-                        ToolTipService.ShowDuration="10000"
-                        ToolTip="Remove a single plan from the current batch."
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                </Button.Template>
+            </Button>
+
+
+            
+            <Button Grid.Row="1" Grid.Column="1" Content="Remove Plan" FontWeight="Bold" 
+                    Command="{Binding RemovePlansCommand}"
+                    Margin="10" Background="#FFCD00" BorderThickness="0"
+                    BorderBrush="Transparent"
+                    ToolTipService.InitialShowDelay="0"
+                    ToolTipService.ShowDuration="10000"
+                    ToolTip="Remove a single plan from the current batch."
                         
-                        />
-            </Border>
-            <Border Grid.Row="2" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5">
-                <Button  Content="Save Batch" FontWeight="Bold"  
+    >
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                </Button.Template>
+            </Button>
+
+                <Button Grid.Row="2" Grid.Column="1"  Content="Save Batch" FontWeight="Bold"  
                          Command="{Binding SaveBatchCommand}" 
                          Margin="10" Background="#FFCD00"
                          BorderThickness="0" 
@@ -98,31 +132,79 @@
                          ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Save the current batch to disk."
-                         
-                         />
-            </Border>
+    >
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
 
-            <Border Grid.Row="2" Grid.Column="3"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5">
-                <Button  Content="Load Batch" FontWeight="Bold"  
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                </Button.Template>
+            </Button>
+
+                <Button Grid.Row="2" Grid.Column="3"  Content="Load Batch" FontWeight="Bold"  
                          Command="{Binding LoadBatchCommand}" Margin="10" 
                          Background="#FFCD00" BorderThickness="0"
                          BorderBrush="Transparent"
                          ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
-                        ToolTip="Load a previously saved (or custom built) batch.&#x0a;Must load a file with data in format:&#x0a;MRN,Course,Plan&#x0a;MRN,Course,Plan&#x0a;..."
-                         />
-            </Border>
+                        ToolTip="Load a previously saved batch.&#x0a;Must load file with .json extension"
+                           >
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
 
-            <Border Grid.Row="1" Grid.Column="3"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="0.25" Margin="5">
-                <Button Content="Clear Batch" FontWeight="Bold"  
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+
+                    </Button.Template>
+                </Button>
+
+                <Button Grid.Row="1" Grid.Column="3" Content="Clear Batch" FontWeight="Bold"  
                         Command="{Binding ClearCurrentBatchCommand}"
                         Margin="10" Background="#FFCD00" BorderThickness="0" 
                         BorderBrush="Transparent"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Clear all plans from the current batch."
-                        />
-            </Border>
+                            >
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
+
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+
+                    </Button.Template>
+                </Button>
         </Grid>
 
     </Grid>

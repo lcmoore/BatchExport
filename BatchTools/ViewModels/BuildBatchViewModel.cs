@@ -30,6 +30,13 @@ namespace BatchTools.ViewModels
             get { return _backendReady; }
             set { SetProperty(ref _backendReady, value); }
         }
+
+        private string _importButtonText = "Import";
+        public string ImportButtonText
+        {
+            get { return _importButtonText; }
+            set { SetProperty(ref _importButtonText, value); }
+        }
         private ObservableCollection<object> _selectedItem = new ObservableCollection<object>();
 
         public ObservableCollection<object> SelectedItem
@@ -80,7 +87,7 @@ namespace BatchTools.ViewModels
         #endregion
         #region Constructor
 
-        public BuildBatchViewModel(IDialogService dialogService, IEventAggregator eventAggregator)
+        public BuildBatchViewModel(IEventAggregator eventAggregator)
         {
             ImportQueryCommand = new DelegateCommand<object>(ImportQueryAsync).ObservesCanExecute(()=>BackendReady);
 
@@ -280,6 +287,7 @@ namespace BatchTools.ViewModels
                 try
                 {
                     BackendReady = false;
+                    ImportButtonText = "Loading...";
 
                     string[] lines = File.ReadAllLines(openFileDialog.FileName);
                     foreach (string line in lines)
@@ -348,6 +356,7 @@ namespace BatchTools.ViewModels
                     // replace the CurrentResults with the new results
                     CurrentResults = new ObservableCollection<Patient>(patients);
                     BackendReady = true;
+                    ImportButtonText = "Import";
 
 
 
@@ -356,6 +365,7 @@ namespace BatchTools.ViewModels
                 {
                     MessageBox.Show(e.Message);
                     BackendReady = true;
+                    ImportButtonText = "Import";
                 }
 
 

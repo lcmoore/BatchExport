@@ -98,34 +98,66 @@
                 <Label  Content="Port:" Foreground="White" HorizontalAlignment="Right"/>
                 <TextBox Text="{Binding LocalPort}" Width="200"/>
             </StackPanel>
-            <Border Grid.Row="0" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="1" Margin="45,0,0,0" MaxWidth="200">
-                <Button Grid.Row="2" Content="Export Local"
-                        Background="#FFCD00" Margin="5"
+                <Button Grid.Row="0" Grid.Column="1"  Content="Export Local"
+
+                        Background="#FFCD00" Margin="60,0,0,0"
                         Foreground="black" FontWeight="Medium" 
                         Command="{Binding ExportLocalCommand}" 
-                        BorderThickness="0" MaxWidth="200"
+                        BorderThickness="0" MaxWidth="150"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Exports the DICOM files for all batch items to the chosen direcctory."
-                        
-                        />
+            >
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                </Button.Template>
+            </Button>
 
 
-            </Border>
-            <Border Grid.Row="0" Grid.Column="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="1" Margin="45,0,0,0" MaxWidth="200">
-                <Button Grid.Row="2" Content="Export Local (No CT)"
-                        Background="#FFCD00" Margin="5"
+
+            <Button Grid.Row="0" Grid.Column="1"  Content="Export Local (No CT)"
+                        Background="#FFCD00"  Margin="60,0,0,0"
                         Foreground="black" FontWeight="Medium" 
                         Command="{Binding ExportLocalCommandNoCT}" 
-                        BorderThickness="0" MaxWidth="200"
+                        BorderThickness="0" MaxWidth="150"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Exports the DICOM files for all batch items to the chosen direcctory."
-                        
-                        />
+            >
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                </Button.Template>
+            </Button>
 
 
-            </Border>
 
         </StackPanel>
 

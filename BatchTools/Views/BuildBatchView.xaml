@@ -128,42 +128,92 @@
 
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="1" Margin="5">
-                <!--<Border.Style>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="Background" 
-                    </Style>-->
-                <!--</Border.Style>-->
-                <Button Grid.Row="0" Content="Import" Background="#FFCD00" Margin="5" 
+       
+
+                <Button Grid.Row="0" Content="{Binding ImportButtonText}" Background="#FFCD00" Margin="5" 
                         Foreground="Black" FontWeight="Medium" 
                         Command="{Binding ImportQueryCommand}"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Load a CSV of Patient IDs. One ID per row."
-                        BorderThickness="0"/>
-            </Border>
+                        BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
 
-            <Border Grid.Row="2"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="1" Margin="5">
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+
+                    </Button.Template>
+                </Button>
+
+          
+
+  
                 <Button Grid.Row="2" Content="Reset" Background="#FFCD00" 
                         Margin="5" Foreground="black" 
                         FontWeight="Medium" Command="{Binding ResetCurrentResultsCommand}"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Clears all loaded patients."
-                        BorderThickness="0"/>
+                        BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="Background" CornerRadius="20" Background="#FFCD00">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
 
-            </Border>
-            <Border Grid.Row="1"  CornerRadius="20" BorderBrush="#FFCD00" Background="#FFCD00" BorderThickness="1" Margin="5">
-                <Button Grid.Row="2" Content="Add to Batch" 
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+
+                    </Button.Template>
+                </Button>
+
+  
+        
+                <Button Grid.Row="1" Content="Add to Batch" 
                         Background="#FFCD00" Margin="5" 
                         Foreground="black" FontWeight="Medium" 
                         Command="{Binding AddSelectionToBatchCommand}"
                         ToolTipService.InitialShowDelay="0"
                         ToolTipService.ShowDuration="10000"
                         ToolTip="Add the currently selected item to the batch."
-                        BorderThickness="0"/>
+                        BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="Background" CornerRadius="20" Background="#FFCD00" >
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="Background" Value="Gray"/>
+                                </Trigger>
 
-            </Border>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+
+                    </Button.Template>
+                </Button>
+
 
 
         </Grid>
