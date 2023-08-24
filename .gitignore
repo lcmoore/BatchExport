@@ -365,4 +365,31 @@ FodyWeavers.xsd
 /TestJustId.csv
 *.json
 
-!Deployment/**
+Deployment/**
+# ignore the bin folders and everything inside
+**/bin
+**/bin/**
+
+# ignore the obj folders and everything inside
+**/obj
+**/obj/**
+
+# ignore the .vs folder and everything inside
+**/.vs
+**/.vs/**
+
+# ignore the .vscode folder and everything inside
+**/.vscode
+**/.vscode/**
+
+# ignore the venv folder and everything inside
+**/venv
+**/venv/**
+
+# ignore the build, dist, and egg-info folders and everything inside
+**/build
+**/build/**
+**/dist
+**/dist/**
+
+
