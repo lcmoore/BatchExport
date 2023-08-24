@@ -19,13 +19,14 @@ using Microsoft.Windows.Themes;
 using System.Windows;
 using BatchTools.Events;
 using Squirrel;
+using System.Diagnostics;
 
 namespace BatchTools.ViewModels
 {
     public class BuildBatchViewModel : BindableBase
     {
         #region Declarations
-        UpdateManager _squirrelUpdateManager;
+        //UpdateManager _squirrelUpdateManager;
         private bool _backendReady = true;
         public bool BackendReady
         {
@@ -82,7 +83,7 @@ namespace BatchTools.ViewModels
             AddSelectionToBatchCommand = new DelegateCommand(AddSelectionToBatch);
 
             _eventAggregator = eventAggregator;
-            CheckForUpdates();
+            //CheckForUpdates();
 
         
 
@@ -91,27 +92,27 @@ namespace BatchTools.ViewModels
 
         }
 
-        private async void CheckForUpdates()
-        {
-            _squirrelUpdateManager = await UpdateManager.GitHubUpdateManager("https://github.com/lcmoore/BatchExport");
-            var updateInfo = await _squirrelUpdateManager.CheckForUpdate();
-            if (updateInfo.ReleasesToApply.Any())
-            {
-                var release = updateInfo.FutureReleaseEntry;
-                var version = release.Version.ToString();
-                var message = $"Version {version} is available. Would you like to update?";
-                var result = MessageBox.Show(message, "Update Available", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
-                {
-                    await _squirrelUpdateManager.DownloadReleases(updateInfo.ReleasesToApply);
-                    await _squirrelUpdateManager.ApplyReleases(updateInfo);
-                    await _squirrelUpdateManager.UpdateApp();
-                    MessageBox.Show("Update Complete. Please restart the application.");
-                    Application.Current.Shutdown();
-                }
-            }
+        //private async void CheckForUpdates()
+        //{
+        //    _squirrelUpdateManager = await UpdateManager.GitHubUpdateManager("https://github.com/lcmoore/BatchExport");
+        //    var updateInfo = await _squirrelUpdateManager.CheckForUpdate();
+        //    if (updateInfo.ReleasesToApply.Any())
+        //    {
+        //        var release = updateInfo.FutureReleaseEntry;
+        //        var version = release.Version.ToString();
+        //        var message = $"Version {version} is available. Would you like to update?";
+        //        var result = MessageBox.Show(message, "Update Available", MessageBoxButton.YesNo);
+        //        if (result == MessageBoxResult.Yes)
+        //        {
+        //            await _squirrelUpdateManager.DownloadReleases(updateInfo.ReleasesToApply);
+        //            await _squirrelUpdateManager.ApplyReleases(updateInfo);
+        //            await _squirrelUpdateManager.UpdateApp();
+        //            MessageBox.Show("Update Complete. Please restart the application.");
+        //            Application.Current.Shutdown();
+        //        }
+        //    }
            
-        }
+        //}
         #endregion
         #region Methods
 
@@ -269,9 +270,9 @@ namespace BatchTools.ViewModels
         {
 
             // if the output file already exists, delete it
-            if (File.Exists(@"PythonScripts/tmp/output.json"))
+            if (File.Exists(@"PythonScripts/dist/GetPatients/output.json"))
             {
-                File.Delete(@"PythonScripts/tmp/output.json");
+                File.Delete(@"PythonScripts/dist/GetPatients/output.json");
             }
             Dictionary<string, Dictionary<string, List<string>>> request = new Dictionary<string, Dictionary<string, List<string>>>();
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -344,7 +345,7 @@ namespace BatchTools.ViewModels
 
                     string result = await Task.Run(()=>callPythonHelper());
                     // read in the json file and create a list of patients
-                    string json_input = File.ReadAllText(@"PythonScripts/tmp/output.json");
+                    string json_input = File.ReadAllText(@"PythonScripts/dist/GetPatients/tmp/output.json");
                     List<Patient> patients = JsonSerializer.Deserialize<List<Patient>>(json_input)!;
                     // replace the CurrentResults with the new results
                     CurrentResults = new ObservableCollection<Patient>(patients);
@@ -374,28 +375,46 @@ namespace BatchTools.ViewModels
         }
         private string callPythonHelper()
         {
-            string result = "";
-            System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
-            //python interprater location
-            start.FileName = "PythonScripts/venv/Scripts/python.exe";
-            //argument with file name and input parameters
-            start.Arguments = string.Format("{0}", "PythonScripts/GetPatients.py");
-            start.UseShellExecute = false;// Do not use OS shell
-            start.CreateNoWindow = true; // We don't need new window
-            start.RedirectStandardOutput = true;// Any output, generated by application will be redirected back
-            start.RedirectStandardError = true; // Any error in standard output will be redirected back (for example exceptions)
+            //string result = "";
+            //System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
+            ////python interprater location
+            //start.FileName = "PythonScripts/venv/Scripts/python.exe";
+            ////argument with file name and input parameters
+            //start.Arguments = string.Format("{0}", "PythonScripts/GetPatients.py");
+            //start.UseShellExecute = false;// Do not use OS shell
+            //start.CreateNoWindow = true; // We don't need new window
+            //start.RedirectStandardOutput = true;// Any output, generated by application will be redirected back
+            //start.RedirectStandardError = true; // Any error in standard output will be redirected back (for example exceptions)
+            //start.LoadUserProfile = true;
+            //using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(start))
+            //{
+            //    using (StreamReader reader = process.StandardOutput)
+            //    {
+            //        string stderr = process.StandardError.ReadToEnd(); // Here are the exceptions from our Python script
+            //        result =  reader.ReadToEnd(); // Here is the result of StdOut(for example: print "test")
+
+
+            //    }
+            //}
+            //return result;
+
+            // start the GetPatients.exe file ocated in PythonScripts/dist/Getpatients
+            var thisdir = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+           
+            //var process = Process.Start(thisdir + "/PythonScripts/dist/GetPatients/GetPatients.exe");
+            //process.WaitForExit();
+            // same as before but without showing a console window
+            var start = new ProcessStartInfo();
+            start.FileName = thisdir + "/PythonScripts/dist/GetPatients/GetPatients.exe";
+
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            start.RedirectStandardError = true;
+            start.CreateNoWindow = true;
             start.LoadUserProfile = true;
-            using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(start))
-            {
-                using (StreamReader reader = process.StandardOutput)
-                {
-                    string stderr = process.StandardError.ReadToEnd(); // Here are the exceptions from our Python script
-                    result =  reader.ReadToEnd(); // Here is the result of StdOut(for example: print "test")
-
-
-                }
-            }
-            return result;
+            var process = Process.Start(start);
+            process.WaitForExit();
+            return "success";
         }
         #endregion
 

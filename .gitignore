@@ -370,6 +370,7 @@ Deployment/**
 **/bin
 **/bin/**
 
+
 # ignore the obj folders and everything inside
 **/obj
 **/obj/**
