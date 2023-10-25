@@ -303,7 +303,14 @@ def main():
         # here, we open the patient, if the courses 
         for patient_index, patient in enumerate(data):
 
+              try:
                 data = getEntirePatient(patient_index, data,app)
+              except Exception as e:
+                # write out error to log file
+                error_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp","error.txt")
+                with open(error_dir, 'w') as f:
+                    f.write(str(e))
+                continue
 
 
 

@@ -249,6 +249,7 @@ namespace BatchTools.ViewModels
                     string[] lines = File.ReadAllLines(openFileDialog.FileName);
                     foreach (string line in lines)
                     {
+
                         string course = null;
                         string plan = null;
 
@@ -293,8 +294,15 @@ namespace BatchTools.ViewModels
                     List<Patient> patient_requests = new List<Patient>();
                     foreach (KeyValuePair<string, Dictionary<string, List<string>>> entry in request)
                     {
-                        Patient thisPatient = new Patient(entry.Key, entry.Value);
-                        patient_requests.Add(thisPatient);
+                        try
+                        {                    
+                            Patient thisPatient = new Patient(entry.Key, entry.Value);
+                            patient_requests.Add(thisPatient);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                        }
                     }
                     // convert request dictionary to json
                     string json = System.Text.Json.JsonSerializer.Serialize(patient_requests);
