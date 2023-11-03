@@ -287,11 +287,26 @@ def main():
     try:
                #change working directory to the directory of this file
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        current_file = os.path.basename(__file__)
+        print("Current File: " + current_file)
+
 
 
         # json test directory
-        dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp","request.json")
-        output = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp","output.json")
+        # if the current file extension is .py: 
+      
+ 
+          # tmp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp")
+          # print(tmp_dir)
+          # dir = os.path.join(tmp_dir,"request.json")
+          # output = os.path.join(tmp_dir,"output.json")
+    
+          # tmp dir is up three directories
+        tmp_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),"tmp")
+        print(tmp_dir)
+        dir = os.path.join(tmp_dir,"request.json")
+        output = os.path.join(tmp_dir,"output.json")
+            
         app = pyesapi.CustomScriptExecutable.CreateApplication('python_ex') 
         # open json file
         with open(dir) as f:
@@ -303,7 +318,16 @@ def main():
         # here, we open the patient, if the courses 
         for patient_index, patient in enumerate(data):
 
+              try:
                 data = getEntirePatient(patient_index, data,app)
+              except Exception as e:
+
+                # write out error to log file
+                error_dir = os.path.join(tmp_dir,"error.txt")
+                with open(error_dir, 'w') as f:
+                    f.write(str(e))
+                app.ClosePatient()
+                continue
 
 
 
@@ -324,8 +348,9 @@ def main():
         # print("Current User: " + app.CurrentUser.ToString())
         # print([p.Id for p in app.PatientSummaries])
     except Exception as e:
+
         # write out error to log file
-        error_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),"tmp","error.txt")
+        error_dir = os.path.join(tmp_dir,"error.txt")
         with open(error_dir, 'w') as f:
             f.write(str(e))
 

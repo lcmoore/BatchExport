@@ -233,9 +233,9 @@ namespace BatchTools.ViewModels
 
 
             // if the output file already exists, delete it
-            if (File.Exists(@"PythonScripts/dist/GetPatients/tmp/output.json"))
+            if (File.Exists(@"PythonScripts/tmp/output.json"))
             {
-                File.Delete(@"PythonScripts/dist/GetPatients/tmp/output.json");
+                File.Delete(@"PythonScripts/tmp/output.json");
             }
             Dictionary<string, Dictionary<string, List<string>>> request = new Dictionary<string, Dictionary<string, List<string>>>();
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -249,6 +249,7 @@ namespace BatchTools.ViewModels
                     string[] lines = File.ReadAllLines(openFileDialog.FileName);
                     foreach (string line in lines)
                     {
+
                         string course = null;
                         string plan = null;
 
@@ -293,17 +294,28 @@ namespace BatchTools.ViewModels
                     List<Patient> patient_requests = new List<Patient>();
                     foreach (KeyValuePair<string, Dictionary<string, List<string>>> entry in request)
                     {
-                        Patient thisPatient = new Patient(entry.Key, entry.Value);
-                        patient_requests.Add(thisPatient);
+                        try
+                        {                    
+                            Patient thisPatient = new Patient(entry.Key, entry.Value);
+                            patient_requests.Add(thisPatient);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                        }
                     }
                     // convert request dictionary to json
                     string json = System.Text.Json.JsonSerializer.Serialize(patient_requests);
                     // write json to file
-                    File.WriteAllText(@"PythonScripts/dist/GetPatients/tmp/request.json", json);
+                    if (!Directory.Exists(@"PythonScripts/tmp"))
+                    {
+                        Directory.CreateDirectory(@"PythonScripts/tmp");
+                    }
+                    File.WriteAllText(@"PythonScripts/tmp/request.json", json);
                     // run python script
                     string result = await Task.Run(() => callPythonHelper());
                     // read in the json file and create a list of patients
-                    string json_input = File.ReadAllText(@"PythonScripts/dist/GetPatients/tmp/output.json");
+                    string json_input = File.ReadAllText(@"PythonScripts/tmp/output.json");
                     List<Patient> patients = System.Text.Json.JsonSerializer.Deserialize<List<Patient>>(json_input)!;
                     foreach (Patient patient in patients)
                     {

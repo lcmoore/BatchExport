@@ -270,9 +270,9 @@ namespace BatchTools.ViewModels
         {
 
             // if the output file already exists, delete it
-            if (File.Exists(@"PythonScripts/dist/GetPatients/output.json"))
+            if (File.Exists(@"PythonScripts/tmp/output.json"))
             {
-                File.Delete(@"PythonScripts/dist/GetPatients/output.json");
+                File.Delete(@"PythonScripts/tmp/output.json");
             }
             Dictionary<string, Dictionary<string, List<string>>> request = new Dictionary<string, Dictionary<string, List<string>>>();
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -339,13 +339,17 @@ namespace BatchTools.ViewModels
                     }
                     // convert request dictionary to json
                     string json = JsonSerializer.Serialize(patient_requests);
+                    if (!Directory.Exists("PythonScripts/tmp"))
+                    {
+                        Directory.CreateDirectory("PythonScripts/tmp");
+                    }
                     // write json to file
                     File.WriteAllText(@"PythonScripts/tmp/request.json", json);
                     // run python script
 
                     string result = await Task.Run(()=>callPythonHelper());
                     // read in the json file and create a list of patients
-                    string json_input = File.ReadAllText(@"PythonScripts/dist/GetPatients/tmp/output.json");
+                    string json_input = File.ReadAllText(@"PythonScripts/tmp/output.json");
                     List<Patient> patients = JsonSerializer.Deserialize<List<Patient>>(json_input)!;
                     // replace the CurrentResults with the new results
                     CurrentResults = new ObservableCollection<Patient>(patients);
