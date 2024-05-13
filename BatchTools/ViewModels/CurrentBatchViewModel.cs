@@ -231,6 +231,19 @@ namespace BatchTools.ViewModels
         private async void CreateBatchAsync(Object obj)
         {
 
+            if (File.Exists(@"PythonScripts/tmp/shortcut.json"))
+            {
+                string json_input = File.ReadAllText(@"PythonScripts/tmp/shortcut.json");
+                List<Patient> patients = System.Text.Json.JsonSerializer.Deserialize<List<Patient>>(json_input)!;
+                foreach (Patient patient in patients)
+                {
+                    AddItem(patient);
+                }
+                BackendReady = true;
+                return;
+
+            }
+
 
             // if the output file already exists, delete it
             if (File.Exists(@"PythonScripts/tmp/output.json"))
